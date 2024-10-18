@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.1](https://github.com/Horus-Turboss-Finance/adress-manager/compare/v2.2.0...v2.2.1) (2024-10-18)
+
+
+### Bug Fixes
+
+* modification de la réponse des requêtes get & modif doc ([42d38cd](https://github.com/Horus-Turboss-Finance/adress-manager/commit/42d38cda1cae46918f70499be514e3d08bf13e54))
+
 ## [2.2.0](https://github.com/Horus-Turboss-Finance/adress-manager/compare/v2.1.0...v2.2.0) (2024-10-16)
 
 
