@@ -182,7 +182,11 @@ GET /service
 | `success` | `Boolean` | Validation si la requête s'est terminé sans problème où inversement |
 | `title` | `String` | Nom de l'erreur |
 | `status` | `Interger` | Le code http de la réponse |
-| `data` | `User` | Result de la requête |
+| `data` | `Adress` | Result de la requête |
+| `data.service` | `String` | Le nom du service |
+| `data.port` | `Number` | Le port qu'il écoute |
+| `data.adressIP` | `String` | Son adresse ip |
+| `data.status` | `Number` | 0 : hors ligne, 1 : en ligne, 2 : limité pour des raisons de sécurité |
 
 #### *Exemple de réponse*
 ```js
@@ -190,7 +194,7 @@ GET /service
   success : true,
   title : "SUCCESS",
   status : 200,
-  data : '[{"_id":"66b3af30ebbb97b1d38821f8","service" : "MAIL", "port" : 3000, "adressIP" : "127.0.0.1", "status" : 1}]'
+  data : '[{"service" : "MAIL", "port" : 3000, "adressIP" : "127.0.0.1", "status" : 1}]'
 }
 ```
 

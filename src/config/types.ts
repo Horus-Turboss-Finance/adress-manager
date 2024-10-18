@@ -13,3 +13,11 @@ export interface IService {
     adressIP: string,
     status: Number
 }
+
+export interface ServiceResponse {
+    _id?: string;
+    service: string;
+    port: number,
+    adressIP: string,
+    status: Number
+}

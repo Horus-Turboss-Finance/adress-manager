@@ -4,6 +4,7 @@ import Service from "./adressModel";
 import { catchSync } from "../../middleware/catchAsync";
 import { ResponseException } from "error-handler";
 import { intContraint } from "constraint"
+import { ServiceResponse } from "../../config/types";
 
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 let tmpIndexLecture : any = {}
@@ -61,7 +62,9 @@ export const readService = catchSync(async (req: Request) => {
     if(tmpIndexLecture[service] > serviceDB.length) tmpIndexLecture[service] = 0;
   }
 
-  throw new ResponseException(JSON.stringify(serviceDB[tmpIndexLecture[service]])).Success();
+  let serviceResponse : ServiceResponse = serviceDB[tmpIndexLecture[service]]
+  delete serviceResponse._id
+  throw new ResponseException(JSON.stringify(serviceResponse)).Success();
 });
 
 export const deleteService = catchSync(async (req: Request) => {
