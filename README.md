@@ -10,6 +10,7 @@
 - [Backend installation](#backend-installation)
 - [Démarer le backend de l'application](#démarer-le-backend-de-lapplication)
 - [API](#api)
+  - [Token Signature](#token-signature)
   - [Ajouter un service](#ajouter-un-service)
     - [URL](#url)
     - [Request Parameters :](#request-parameters-)
@@ -71,25 +72,8 @@
 
 ## Backend installation
 
-**1. Packages**
-
 ```shell
 npm install
-```
-
-**2. Créer les fichiers de configuration**
-
-```shell
-cd ./config
-nano .env
-```
-
-```env
-# Dans le fichier `.env`
-PORTAPP=Int # Port d'écoute de la machine
-
-WEBHOOKERROR=String # L'url pour le webhook discord (avertir des erreurs)
-URLDB=String # l'uri de mongodb (avec une db en fin de uri)
 ```
 
 ## Démarer le backend de l'application
@@ -102,6 +86,10 @@ npm start
 ```
 
 ## API
+### Token Signature 
+
+> [!IMPORTANT] Les tokens sont obligatoires dans toutes les 
+
 ### Ajouter un service
 #### URL
 ```http

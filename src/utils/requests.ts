@@ -1,11 +1,11 @@
 import axios from "axios"
-import { APPCRITIC } from "../config/envLoader"
+import { env } from "params"
 
 export let updateAfterControl = async ({adressIP, port, service, signature, status} : {adressIP : string, port : number, service : string, signature : string, status : number}) =>{
   await axios({
     url: '/service',
     method: 'put',
-    baseURL: `http://127.0.0.1:${APPCRITIC.PORT}`,
+    baseURL: `http://127.0.0.1:${env.PORT_ADRESSMANAGER}`,
     data: {
       signature,
       adressIP, 
@@ -20,7 +20,7 @@ export let downAfterControle = async ({adressIP, signature, service, port} : {ad
   await axios({
     url: '/service',
     method: 'delete',
-    baseURL: `http://127.0.0.1:${APPCRITIC.PORT}`,
+    baseURL: `http://127.0.0.1:${env.PORT_ADRESSMANAGER}`,
     data: {
       signature,
       adressIP, 

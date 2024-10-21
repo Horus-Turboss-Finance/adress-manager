@@ -2,28 +2,17 @@ import app from './app'
 import { logSys } from './config/log';
 import { CE_Services } from 'log';
 import os, { NetworkInterfaceInfo } from "os";
-import { APPCRITIC } from './config/envLoader';
+import { env, loadEnv } from "params"
 
 import "./services/routines/watchServices"
-
+loadEnv()
 
 let main = async () => {
     /*
     CONNECT API
     */
-    app.listen(APPCRITIC.PORT, () => {
-      const interfaces : NodeJS.Dict<NetworkInterfaceInfo[]> = os.networkInterfaces();
-      for (const k in interfaces) {
-          for (const k2 in interfaces[k]) {
-              /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
-              /* @ts-ignore */
-              const address = interfaces[k][k2];
-    
-              if (address.family === 'IPv4' && !address.internal) {
-                logSys.ServiceInfo(CE_Services.inService.app, `Connect Url : ${address.address}:${APPCRITIC.PORT}`)
-              }
-          }
-      }
+    app.listen(env.PORT_ADRESSMANAGER, env.IP_ADRESSMANAGER, () => {
+      logSys.ServiceInfo(CE_Services.inService.app, `Connect Url : ${env.IP_ADRESSMANAGER}:${env.PORT_ADRESSMANAGER}`)
     })
 }
 

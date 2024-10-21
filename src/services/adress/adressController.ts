@@ -4,9 +4,15 @@ import Service from "./adressModel";
 import { catchSync } from "../../middleware/catchAsync";
 import { ResponseException } from "error-handler";
 import { intContraint } from "constraint"
-import { ServiceResponse } from "../../config/types";
 
-/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+interface ServiceResponse {
+  _id?: string;
+  service: string;
+  port: number,
+  adressIP: string,
+  status: Number
+}
+
 let tmpIndexLecture : any = {}
 
 export const addService = catchSync(async (req: Request) => {

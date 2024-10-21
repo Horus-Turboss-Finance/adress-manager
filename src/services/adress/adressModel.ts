@@ -1,10 +1,18 @@
 import { Schema, model } from "mongoose";
-import { IService } from "../../config/types";
+interface IService {
+  _id: string;
+  service: string;
+  port: number,
+  adressIP: string,
+  status: Number
+}
+
 
 const userSchema = new Schema<IService>({
   service: {
     type: String,
     required: true,
+    index : true
   },
   port: {
     type: Number,

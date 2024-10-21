@@ -1,11 +1,10 @@
-import { logSys } from "./log";
-import { CE_Services } from "log";
-import { DBCONFIG } from "./envLoader";
+import { logSys, CE_Services } from "./log";
+import { env } from "params";
 
 import mongoose from "mongoose";
 
 export const connectDatabase = () => {
-  mongoose.connect(DBCONFIG.URLDB)
+  mongoose.connect(env.URLDB)
   .then(() => {
     logSys.ServiceInfo(CE_Services.inService.mongoose, "Connected")
   }).catch((error) => {
