@@ -5,7 +5,7 @@
     "esModuleInterop": true,
     "module": "CommonJS",
     "target": "ES2022",
-    "outDir": "build",
+    "outDir": "dist",
     "strict": true,
   },
   "include": [

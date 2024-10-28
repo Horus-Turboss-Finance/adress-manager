@@ -1,5 +1,8 @@
 import axios from "axios"
-import { env } from "params"
+import { params } from "packages"
+
+
+let { env } = params
 
 export let updateAfterControl = async ({adressIP, port, service, status} : {adressIP : string, port : number, service : string, status : number}) =>{
   await axios({

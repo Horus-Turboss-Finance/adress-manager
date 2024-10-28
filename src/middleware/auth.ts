@@ -1,10 +1,11 @@
 import { catchSync } from './catchAsync';
-import { ResponseException } from 'error-handler';
+import { ResponseException, params} from "packages"
 import { logSys, CE_Services } from "../config/log";
 import { NextFunction, Request, Response } from 'express';
-import { env } from "params";
 
+let { env } = params
 let ipWhiteList = env.IP_SERVICE_WHITELIST.split(';')
+
 export const controleOrigine = catchSync(async (req : Request, res : Response, next : NextFunction) => {
   let socketAddr = req.socket ? req.socket.remoteAddress : req.ip
   let proxyAddrs = req.headers['host']
@@ -12,7 +13,7 @@ export const controleOrigine = catchSync(async (req : Request, res : Response, n
   let addr = [socketAddr].concat(proxyAddrs)
 
   if(!addr.some(item => ipWhiteList.includes(item ?? ""))) {
-    logSys.ServiceInfo(CE_Services.inService.app, `User : "${addr[0] ?? "NOT FOUND"} try to use service registery`)
+    logSys.ServiceInfo(CE_Services.app, `User : "${addr[0] ?? "NOT FOUND"} try to use service registery`)
     throw new ResponseException("Vous n'êtes pas abilité à utiliser cette ressource.").Forbidden()
   }
   next()

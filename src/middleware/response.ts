@@ -1,5 +1,5 @@
 import { logSys } from "../config/log"
-import { ResponseException } from "error-handler"
+import { ResponseException } from "packages"
 import { NextFunction, Request, Response } from "express"
 let i = 0
 export const ResponseProtocole = (err : Error & any, req : Request, res : Response, next : NextFunction) => {

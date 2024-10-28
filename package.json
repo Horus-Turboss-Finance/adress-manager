@@ -29,15 +29,10 @@
   "homepage": "https://github.com/Horus-Turboss-Finance/adress-manager#readme",
   "dependencies": {
     "axios": "^1.7.7",
-    "checks": "file:../packages/checks",
-    "constraint": "file:../packages/constraint",
-    "dateformat": "file:../packages/dateFormat",
     "dotenv": "^16.4.5",
-    "error-handler": "file:../packages/error-handler",
     "express": "^4.17.1",
-    "log": "file:../packages/log",
     "mongoose": "^8.7.0",
-    "params": "file:../packages/params"
+    "packages": "github:Horus-Turboss-Finance/Packages"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.5.0",

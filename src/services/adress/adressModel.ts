@@ -1,6 +1,9 @@
-import { isValidIP } from "checks";
+import { utils, params } from "packages";
 import { Schema, model } from "mongoose";
-import { serviceName } from "params";
+
+let { isValidIP } = utils
+let { serviceName } = params;
+
 interface IService {
   _id: string;
   service: string;
@@ -15,7 +18,7 @@ const servicesSchema = new Schema<IService>({
     required: [true, "Service required"],
     index : true,
     enum: {
-      values: serviceName,
+      values: serviceName.array,
       message: '{VALUE} is not a supported service'
     }
   },
