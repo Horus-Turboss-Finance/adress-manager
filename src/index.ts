@@ -1,10 +1,13 @@
-import app from './app'
+import path from 'path';
+import app from './app';
 import { params } from "packages"
 import { logSys, CE_Services } from './config/log';
 
-let { env, loadEnv } = params
 import "./services/routines/watchServices"
-loadEnv()
+
+let { env, loadEnv } = params
+
+loadEnv(path.resolve(__dirname, "./.env"))
 
 let main = async () => {
     /*
