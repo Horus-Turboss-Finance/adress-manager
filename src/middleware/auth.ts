@@ -1,21 +1,21 @@
-import { CE_Services } from "log";
-import { logSys } from "../config/log";
 import { catchSync } from './catchAsync';
 import { ResponseException } from 'error-handler';
-import { CompareSignature } from "signed-service";
+import { logSys, CE_Services } from "../config/log";
 import { NextFunction, Request, Response } from 'express';
+import { env } from "params";
 
+let ipWhiteList = env.IP_SERVICE_WHITELIST.split(';')
 export const controleOrigine = catchSync(async (req : Request, res : Response, next : NextFunction) => {
-  let { signature } = req.body
-  let access = true
+  let socketAddr = req.socket ? req.socket.remoteAddress : req.ip
+  let proxyAddrs = req.headers['host']
 
-  if(!signature) access = false
-  let accessBcrypt = CompareSignature(signature)
+  let addr = [socketAddr].concat(proxyAddrs)
 
-  if(!access || !accessBcrypt){
-    logSys.ServiceInfo(CE_Services.inService.app, `User : "${req.headers['x-forwarded-for']} try to use service registery`)
-    throw new ResponseException("Vous n'êtes pas abilité à utiliser cette api.").Forbidden()
+  if(!addr.some(item => ipWhiteList.includes(item ?? ""))) {
+    logSys.ServiceInfo(CE_Services.inService.app, `User : "${addr[0] ?? "NOT FOUND"} try to use service registery`)
+    throw new ResponseException("Vous n'êtes pas abilité à utiliser cette ressource.").Forbidden()
   }
+  next()
 
   let method = req.method;
 
@@ -35,6 +35,4 @@ export const controleOrigine = catchSync(async (req : Request, res : Response, n
     default:
       break;
   }
-
-  next()
 })

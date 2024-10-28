@@ -10,7 +10,6 @@
 - [Backend installation](#backend-installation)
 - [Démarer le backend de l'application](#démarer-le-backend-de-lapplication)
 - [API](#api)
-  - [Token Signature](#token-signature)
   - [Ajouter un service](#ajouter-un-service)
     - [URL](#url)
     - [Request Parameters :](#request-parameters-)
@@ -67,8 +66,7 @@
 - `express` - Framework web minimaliste, rapide et sans opinion pour Node.js [^24].
 - `log` - class pour les logs in app [^25].
 - `mongoose` - Mongoose est un outil de modélisation d'objets MongoDB conçu pour fonctionner dans un environnement asynchrone [^26].
-- `signed-service` - Signature des services [^27].
-
+- `params` - variables de définitions (ou clé secrètes) partagé entre plusieurs service [^27]
 
 ## Backend installation
 
@@ -86,9 +84,6 @@ npm start
 ```
 
 ## API
-### Token Signature 
-
-> [!IMPORTANT] Les tokens sont obligatoires dans toutes les 
 
 ### Ajouter un service
 #### URL
@@ -199,7 +194,7 @@ PUT /service
 | `port`     | `INT`    | 
 | `adressIP` | `String` |
 | `service`  | `String` | 
-| `status`   | `INT` | 
+| `status`   | `INT`    | 
 
 #### *Exemple de requête*
 ```js
@@ -249,7 +244,7 @@ DELETE /service
 | :--------- | :------: | 
 | `adressIP` | `String` |
 | `service`  | `String` |
-| `port`     | `INT` |
+| `port`     | `INT`    |
 
 #### *Exemple de requête*
 ```js
@@ -317,4 +312,4 @@ Ref :
 [^24]: [Url du dépot `express`](https://www.npmjs.com/package/express)
 [^25]: [Url du dépot `log`](https://github.com/Horus-Turboss-Finance/Packages/tree/main/log)
 [^26]: [Url du dépot `mongoose`](https://www.npmjs.com/package/mongoose)
-[^27]: [Url du dépot `signed-service`](https://github.com/Horus-Turboss-Finance/Packages/tree/main/signed-service)
+[^27]: [Url du dépot `params`](https://github.com/Horus-Turboss-Finance/Packages/tree/main/params)

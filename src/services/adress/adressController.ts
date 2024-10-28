@@ -1,9 +1,9 @@
-import { Request } from "express";
-import { intCheck, isValidIP } from "checks";
+import { NextFunction, Request, Response } from "express";
 import Service from "./adressModel";
 import { catchSync } from "../../middleware/catchAsync";
 import { ResponseException } from "error-handler";
-import { intContraint } from "constraint"
+import { mongooseMessageErrorFormator } from "constraint"
+import { CE_Services, logSys } from "../../config/log";
 
 interface ServiceResponse {
   _id?: string;
@@ -15,15 +15,14 @@ interface ServiceResponse {
 
 let tmpIndexLecture : any = {}
 
-export const addService = catchSync(async (req: Request) => {
+export const addService = catchSync(async (req: Request, res : Response, next : NextFunction) => {
   let { port, adressIP, service } = req.body;
-  if(!port || !adressIP || !service) throw new ResponseException("Le port, l'adresse IP ou le service est manquant").BadRequest()
   
-  if (!intCheck(parseInt(port)))
-    throw new ResponseException("Le port est un nombre").BadRequest();
-  
-  if (!isValidIP(adressIP))
-    throw new ResponseException("L'adresse ip est invalide").BadRequest();
+  let update = {
+    port,
+    service,
+    adressIP,
+  }
 
   let filter = {
     port,
@@ -31,24 +30,13 @@ export const addService = catchSync(async (req: Request) => {
     adressIP,
   }
 
-  let update = {
-    port,
-    service,
-    adressIP,
-    status: 1,
-  }
-
-  await Service.findOneAndUpdate(filter, update, {
-    upsert: true, new: true, setDefaultsOnInsert: true
-  });
-
-  throw new ResponseException("Service enregistrée").OK();
+  dataService(update, filter, next)
 });
 
 export const readService = catchSync(async (req: Request) => {
   const { service } = req.body;
   if (!service)
-    throw new ResponseException("Aucune service fournit").BadRequest();
+    throw new ResponseException("Aucun service fournit").BadRequest();
 
   let serviceDB = await Service.find({
       service : {
@@ -73,45 +61,79 @@ export const readService = catchSync(async (req: Request) => {
   throw new ResponseException(JSON.stringify(serviceResponse)).Success();
 });
 
-export const deleteService = catchSync(async (req: Request) => {
+export const deleteService = catchSync(async (req: Request, res : Response, next : NextFunction) => {
   const { adressIP, port, service } = req.body;
-  if(!adressIP || !port || !service) throw new ResponseException("Un champ est manquant").BadRequest()
+  if(!adressIP || !port || !service) throw new ResponseException("Au moins un champ est manquant").BadRequest()
 
-  const serviceDB = await Service.findOneAndDelete({
-    $and: [
-      { adressIP },
-      { service },
-      { port }, 
-    ],
-  });
+  next(new ResponseException("Service supprimé des annuaires").Success());
 
-  if (!serviceDB) throw new ResponseException("Aucun Service trouvé").NotFound();
-  throw new ResponseException("Service supprimé des annuaires").Success();
+  try{
+    await Service.findOneAndDelete({
+      $and: [
+        { adressIP },
+        { service },
+        { port }, 
+      ],
+    });
+  }catch(e : any){
+    logSys.UnknowAppError(CE_Services.inService.mongoose, e)
+  }
 });
 
-export const updateService = catchSync(async (req: Request) => {
+export const updateService = catchSync(async (req: Request, res : Response, next : NextFunction) => {
   let { port, adressIP, service, status } = req.body;
-  if(!port || !adressIP || !service || !status) throw new ResponseException("Un champ est manquant").BadRequest()
-  if(!intContraint(status, 0, 2)) throw new ResponseException("Le status doit être compris entre 0 et 2").BadRequest()
-
-  const newServiceData = {
-    status,
-  };
   
-  const selector = {
-    $and: [
-      { adressIP },
-      { service },
-      { port }, 
-    ],
-  };
+  let update = {
+    port,
+    service,
+    adressIP,
+    status
+  }
 
-  const serviceDB = await Service.findOneAndUpdate(selector, newServiceData, {
-    new: true,
-    runValidators: true,
-  });
+  let filter = {
+    port,
+    service,
+    adressIP,
+  }
 
+  dataService(update, filter, next)
+})
 
-  if (!serviceDB) throw new ResponseException("Aucun service trouvé").NotFound();
-  throw new ResponseException("Service bien modifié").OK();
-});
+let dataService = async (update : object, filter: object, next : NextFunction) => {
+  try{
+    const validateCheck = new Service(update)
+    const error = validateCheck.validateSync()
+    if(error) throw error
+
+    next(new ResponseException("Service enregistré").OK());
+
+    await Service.findOneAndUpdate(filter, update, {
+      upsert: true, new: true, setDefaultsOnInsert: true
+    });
+  }catch(e : any){
+    if(e.name && e.name == "ValidationError") {
+      if(e.errors.port){
+        throw new ResponseException(mongooseMessageErrorFormator(e.errors.port.message, e.errors.port.value, "Port", "number"))
+        .BadRequest();
+      }
+
+      if(e.errors.service){
+        throw new ResponseException(mongooseMessageErrorFormator(e.errors.service.message, e.errors.service.value, "Service", "string"))
+        .BadRequest();
+      }
+
+      if(e.errors.status){
+        throw new ResponseException(mongooseMessageErrorFormator(e.errors.status.message, e.errors.status.value, "Status", "number"))
+        .BadRequest();
+      }
+
+      if(e.errors.adressIP){
+        throw new ResponseException(mongooseMessageErrorFormator(e.errors.adressIP.message, e.errors.adressIP.value, "IP adress", "ip"))
+        .BadRequest();
+      }
+    }
+
+    logSys.UnknowAppError(CE_Services.inService.mongoose, e)
+    throw new ResponseException().UnknownError()
+  }
+}

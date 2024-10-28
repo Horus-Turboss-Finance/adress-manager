@@ -37,8 +37,7 @@
     "express": "^4.17.1",
     "log": "file:../packages/log",
     "mongoose": "^8.7.0",
-    "params": "file:../packages/params",
-    "signed-service": "file:../packages/signed-service"
+    "params": "file:../packages/params"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.5.0",

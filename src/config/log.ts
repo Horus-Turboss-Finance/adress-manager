@@ -1,6 +1,6 @@
 import path from "path";
 import { log } from "log";
-import { CreateSignature, ServicesOptions } from "signed-service";
+import { serviceObj } from "params";
 
-export const logSys = new log(CreateSignature(ServicesOptions.AdressManager), ServicesOptions.AdressManager, path.resolve("src", "log"))
+export const logSys = new log(serviceObj.adress, path.resolve("src", "log"))
 export { CE_Services } from 'log'

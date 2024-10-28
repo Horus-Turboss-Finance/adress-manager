@@ -1,13 +1,12 @@
 import axios from "axios"
 import { env } from "params"
 
-export let updateAfterControl = async ({adressIP, port, service, signature, status} : {adressIP : string, port : number, service : string, signature : string, status : number}) =>{
+export let updateAfterControl = async ({adressIP, port, service, status} : {adressIP : string, port : number, service : string, status : number}) =>{
   await axios({
     url: '/service',
     method: 'put',
     baseURL: `http://127.0.0.1:${env.PORT_ADRESSMANAGER}`,
     data: {
-      signature,
       adressIP, 
       service,
       status,
@@ -16,13 +15,12 @@ export let updateAfterControl = async ({adressIP, port, service, signature, stat
   })
 }
 
-export let downAfterControle = async ({adressIP, signature, service, port} : {adressIP : string, signature : string, service : string, port : number}) => {
+export let downAfterControle = async ({adressIP, service, port} : {adressIP : string, service : string, port : number}) => {
   await axios({
     url: '/service',
     method: 'delete',
     baseURL: `http://127.0.0.1:${env.PORT_ADRESSMANAGER}`,
     data: {
-      signature,
       adressIP, 
       service,
       port, 
