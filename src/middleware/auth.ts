@@ -7,6 +7,7 @@ let { env } = params
 let ipWhiteList = env.IP_SERVICE_WHITELIST.split(';')
 
 export const controleOrigine = catchSync(async (req : Request, res : Response, next : NextFunction) => {
+  if(env.NODE_ENV !== "PRODUCTION") return next()
   let socketAddr = req.socket ? req.socket.remoteAddress : req.ip
   let proxyAddrs = req.headers['host']
 
