@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://github.com/Horus-Turboss-Finance/adress-manager/compare/v2.3.0...v2.4.0) (2024-10-30)
+
+
+### Features
+
+* **env:** modification du placement du env ([3c36d85](https://github.com/Horus-Turboss-Finance/adress-manager/commit/3c36d85e64fc7935e4fd035e446915a686a26bfa))
+
+
+### Bug Fixes
+
+* correction bug ([7133268](https://github.com/Horus-Turboss-Finance/adress-manager/commit/71332685efb599527e0eee7206d7ed001385b599))
+* correction bug ([d5e8e63](https://github.com/Horus-Turboss-Finance/adress-manager/commit/d5e8e63ddaf1477a7930e221f3b3771a15f57803))
+* correction contre les crash auth lors des tests ([41b4018](https://github.com/Horus-Turboss-Finance/adress-manager/commit/41b40184d14034121dcf5743abdf02f17ca9272c))
+* mise à jour des dépendances ([d2e9f1e](https://github.com/Horus-Turboss-Finance/adress-manager/commit/d2e9f1e4e6103211b5f66612e4878b44641ac38d))
+
 ## [2.3.0](https://github.com/Horus-Turboss-Finance/adress-manager/compare/v2.2.1...v2.3.0) (2024-10-28)
 
 
