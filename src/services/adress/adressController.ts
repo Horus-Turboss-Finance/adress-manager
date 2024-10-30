@@ -6,14 +6,19 @@ import { CE_Services, logSys } from "../../config/log";
 
 let { mongooseMessageErrorFormator } = utils
 interface ServiceResponse {
-  _id?: string;
+  adressIP: string;
   service: string;
-  port: number,
-  adressIP: string,
-  status: Number
+  status: Number;
+  port: number;
+  __v?: number;
+  _id?: string;
 }
 
 let tmpIndexLecture : any = {}
+let cacheServices = {
+  time : Date.now(),
+  service : {}
+}
 
 export const addService = catchSync(async (req: Request, res : Response, next : NextFunction) => {
   let { port, adressIP, service } = req.body;
@@ -38,26 +43,47 @@ export const readService = catchSync(async (req: Request) => {
   if (!service)
     throw new ResponseException("Aucun service fournit").BadRequest();
 
-  let serviceDB = await Service.find({
+  /* @ts-ignore */
+  if(cacheServices.time < Date.now() - 60 * 1000 || !cacheServices.service[service]){
+    let serviceDB = await Service.find({
       service : {
         $regex: service,
         $options: "i",
       },
       status : 1
-  });
+    });
+      
+    if (!serviceDB || !serviceDB[0])
+      throw new ResponseException("Aucun Service trouvé").NotFound();
 
-  if (!serviceDB || !serviceDB[0])
-    throw new ResponseException("Aucun Service trouvé").NotFound();
+    if(tmpIndexLecture[service] == undefined){
+      tmpIndexLecture[service] = 0
+    }else{
+      tmpIndexLecture[service] ++
+      if(tmpIndexLecture[service] > serviceDB.length) tmpIndexLecture[service] = 0;
+    }
+
+    /* @ts-ignore */
+    cacheServices.service[service] = serviceDB
+    cacheServices.time = Date.now()
+
+    let serviceResponse : ServiceResponse = serviceDB[tmpIndexLecture[service]]
+    delete serviceResponse._id
+    throw new ResponseException(JSON.stringify(serviceResponse)).Success();
+  }
 
   if(tmpIndexLecture[service] == undefined){
     tmpIndexLecture[service] = 0
   }else{
     tmpIndexLecture[service] ++
-    if(tmpIndexLecture[service] > serviceDB.length) tmpIndexLecture[service] = 0;
+    /* @ts-ignore */
+    if(tmpIndexLecture[service] >= cacheServices.service[service].length) tmpIndexLecture[service] = 0
   }
 
-  let serviceResponse : ServiceResponse = serviceDB[tmpIndexLecture[service]]
+  /* @ts-ignore */
+  let serviceResponse : ServiceResponse = cacheServices.service[service][tmpIndexLecture[service]]
   delete serviceResponse._id
+  delete serviceResponse.__v
   throw new ResponseException(JSON.stringify(serviceResponse)).Success();
 });
 

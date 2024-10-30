@@ -7,7 +7,7 @@ import "./services/routines/watchServices"
 
 let { env, loadEnv } = params
 
-loadEnv(path.resolve(__dirname, "../.env"))
+env = loadEnv(path.resolve(__dirname, "../../.env"))
 
 let main = async () => {
     /*

@@ -1,9 +1,12 @@
+import path from 'path';
 import { catchSync } from './catchAsync';
-import { ResponseException, params} from "packages"
+import { ResponseException, params} from "packages";
 import { logSys, CE_Services } from "../config/log";
 import { NextFunction, Request, Response } from 'express';
 
-let { env } = params
+let { env, loadEnv } = params
+env = loadEnv(path.resolve(__dirname, '../../../.env'))
+
 let ipWhiteList = env.IP_SERVICE_WHITELIST.split(';')
 
 export const controleOrigine = catchSync(async (req : Request, res : Response, next : NextFunction) => {

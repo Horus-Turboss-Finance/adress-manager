@@ -8,6 +8,8 @@
   - [Dev-packages](#dev-packages)
   - [Packages](#packages-1)
 - [Backend installation](#backend-installation)
+  - [Dépendances](#dépendances)
+  - [.env](#env)
 - [Démarer le backend de l'application](#démarer-le-backend-de-lapplication)
 - [API](#api)
   - [Ajouter un service](#ajouter-un-service)
@@ -58,20 +60,36 @@
 
 ### Packages
 - `axios` - packages pour les requêtes [^18].
-- `checks` - fonctions pour vérifier le typage [^19].
-- `constraint` - fonction de contrainte (surtout texte) [^20].
-- `dateformat` - fonction de modifications sur la date [^21].
-- `dotenv` - Dotenv est un module à dépendance zéro qui charge les variables d'environnement d'un fichier .env dans process.env [^22].
-- `error-handler` - fonctions des gestions des réponses et erreurs [^23].
-- `express` - Framework web minimaliste, rapide et sans opinion pour Node.js [^24].
-- `log` - class pour les logs in app [^25].
-- `mongoose` - Mongoose est un outil de modélisation d'objets MongoDB conçu pour fonctionner dans un environnement asynchrone [^26].
-- `params` - variables de définitions (ou clé secrètes) partagé entre plusieurs service [^27]
+- `express` - Framework web minimaliste, rapide et sans opinion pour Node.js [^19].
+- `mongoose` - Mongoose est un outil de modélisation d'objets MongoDB conçu pour fonctionner dans un environnement asynchrone [^20].
+- `packages` - Toutes les fonctions ou variables partagé sur plusieurs services [^21]
 
 ## Backend installation
 
+### Dépendances 
+
 ```shell
 npm install
+```
+
+### .env
+```shell
+nano ../.env
+```
+
+Puis veuillez saisir les information suivantes :
+```js
+WEBHOOK_ERROR_FOR_DISCORD="Lien de votre webhook discord"
+URLDB="L'url de votre base de donnée mongodb"
+
+PORT_APIGATEWAY="Le port où vous souhaitez que l'api gateway écoute"
+PORT_ADRESSMANAGER="Le port où vous souhaitez que l'adress manager écoute"
+
+IP_APIGATEWAY="l'ip de la machine de l'api gateway (127.0.0.1 si tout roule sur la même machine)"
+IP_ADRESSMANAGER="l'ip de la machine de l'adress manager (127.0.0.1 si tout roule sur la même machine)"
+IP_SERVICE_WHITELIST="l'ip des machines autorisé à se connecter directement entre services (127.0.0.1 si tout roule sur la même machine)"
+
+NODE_ENV="DEVELOPMENT|PRODUCTION|TEST"
 ```
 
 ## Démarer le backend de l'application
@@ -304,12 +322,6 @@ Ref :
 [^16]: [Url du dépot `ts-node`](https://www.npmjs.com/package/ts-node)
 [^17]: [Url du dépot `typescript`](https://www.npmjs.com/package/typescript)
 [^18]: [Url du dépot `axios`](https://www.npmjs.com/package/axios)
-[^19]: [Url du dépot `checks`](https://github.com/Horus-Turboss-Finance/Packages/tree/main/checks)
-[^20]: [Url du dépot `constraint`](https://github.com/Horus-Turboss-Finance/Packages/tree/main/constraint)
-[^21]: [Url du dépot `dateformat`](https://github.com/Horus-Turboss-Finance/Packages/tree/main/dateformat)
-[^22]: [Url du dépot `dotenv`](https://www.npmjs.com/package/dotenv)
-[^23]: [Url du dépot `error-handler`](https://github.com/Horus-Turboss-Finance/Packages/tree/main/error-handler)
-[^24]: [Url du dépot `express`](https://www.npmjs.com/package/express)
-[^25]: [Url du dépot `log`](https://github.com/Horus-Turboss-Finance/Packages/tree/main/log)
-[^26]: [Url du dépot `mongoose`](https://www.npmjs.com/package/mongoose)
-[^27]: [Url du dépot `params`](https://github.com/Horus-Turboss-Finance/Packages/tree/main/params)
+[^19]: [Url du dépot `express`](https://www.npmjs.com/package/express)
+[^20]: [Url du dépot `mongoose`](https://www.npmjs.com/package/mongoose)
+[^21]: [Url du dépot `packages`](https://github.com/Horus-Turboss-Finance/Packages)

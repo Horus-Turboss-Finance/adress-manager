@@ -1,14 +1,15 @@
-import axios from "axios"
-import { params } from "packages"
+import path from "path";
+import axios from "axios";
+import { params } from "packages";
 
-
-let { env } = params
+let { env, loadEnv } = params
+env = loadEnv(path.resolve(__dirname, '../../../.env'))
 
 export let updateAfterControl = async ({adressIP, port, service, status} : {adressIP : string, port : number, service : string, status : number}) =>{
   await axios({
     url: '/service',
     method: 'put',
-    baseURL: `http://127.0.0.1:${env.PORT_ADRESSMANAGER}`,
+    baseURL: `http://${env.IP_ADRESSMANAGER}:${env.PORT_ADRESSMANAGER}`,
     data: {
       adressIP, 
       service,
@@ -22,7 +23,7 @@ export let downAfterControle = async ({adressIP, service, port} : {adressIP : st
   await axios({
     url: '/service',
     method: 'delete',
-    baseURL: `http://127.0.0.1:${env.PORT_ADRESSMANAGER}`,
+    baseURL: `http://${env.IP_ADRESSMANAGER}:${env.PORT_ADRESSMANAGER}`,
     data: {
       adressIP, 
       service,
