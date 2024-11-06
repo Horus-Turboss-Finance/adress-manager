@@ -16,6 +16,13 @@ const app = express()
 connectDatabase()
 
 /*
+    CONFIGURATION
+*/
+
+app.disable("x-powered-by")
+app.enable("json escalpe")
+
+/*
     MIDDLEWARE
 */
 
