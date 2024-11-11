@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.5.0](https://github.com/Horus-Turboss-Finance/adress-manager/compare/v2.4.0...v2.5.0) (2024-11-11)
+
+
+### Features
+
+* **auth:** ajout d'une vérification en plus s'il y a usurpation d'ip ([b6812c4](https://github.com/Horus-Turboss-Finance/adress-manager/commit/b6812c45fc21fe259e91dd0e33b417bdce46ceeb))
+
 ## [2.4.0](https://github.com/Horus-Turboss-Finance/adress-manager/compare/v2.3.0...v2.4.0) (2024-10-30)
 
 
