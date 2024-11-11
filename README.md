@@ -43,26 +43,20 @@
 - `@commitlint/cli` - Un module très utile pour la normalisation des noms de commit git [^1].
 - `@commitlint/config-conventional`  - configuration conventionnel de commitlint [^2]. 
 - `@types/express` - Définitions des types du module express [^3].
-- `@types/jest` - Définitions des types du module jest [^4].
-- `@types/node` - Définitions des types du module nodejs [^5].
-- `@types/supertest` - Définitions des types du module supertest [^6].
-- `@typescript-eslint/eslint-plugin` - Un plugin ESLint qui fournit des règles de contrôle pour les bases de code TypeScript [^7].
-- `@typescript-eslint/parser` - Un analyseur ESLint qui exploite TypeScript ESTree pour permettre à ESLint d'analyser le code source TypeScript [^8].
-- `eslint` - ESLint est un outil permettant d'identifier et de signaler les schémas trouvés dans le code ECMAScript/JavaScript [^9].
-- `eslint-plugin-jest` - ESLint plugin for Jest [^10].
-- `husky` - Husky améliore vos commits et plus encore [^11].
-- `jest` - Des tests JavaScript délicieux [^12].
-- `nodemon` - nodemon est un outil qui redémarre automatiquement l'application node lorsque des changements sont détectés [^13].
-- `supertest` - Module pour teste HTTP [^14].
-- `ts-jest` - Un transformateur Jest avec le support de la carte source qui vous permet d'utiliser Jest pour tester des projets écrits en TypeScri [^15].
-- `ts-node` - Exécution TypeScript et REPL pour node.js, avec support source map et ESM natif [^16].
-- `typescript` - Javascript avec typage fort [^17].
+- `@types/node` - Définitions des types du module nodejs [^4].
+- `@typescript-eslint/eslint-plugin` - Un plugin ESLint qui fournit des règles de contrôle pour les bases de code TypeScript [^5].
+- `@typescript-eslint/parser` - Un analyseur ESLint qui exploite TypeScript ESTree pour permettre à ESLint d'analyser le code source TypeScript [^6].
+- `eslint` - ESLint est un outil permettant d'identifier et de signaler les schémas trouvés dans le code ECMAScript/JavaScript [^7].
+- `husky` - Husky améliore vos commits et plus encore [^8].
+- `nodemon` - nodemon est un outil qui redémarre automatiquement l'application node lorsque des changements sont détectés [^9].
+- `ts-node` - Exécution TypeScript et REPL pour node.js, avec support source map et ESM natif [^10].
+- `typescript` - Javascript avec typage fort [^11].
 
 ### Packages
-- `axios` - packages pour les requêtes [^18].
-- `express` - Framework web minimaliste, rapide et sans opinion pour Node.js [^19].
-- `mongoose` - Mongoose est un outil de modélisation d'objets MongoDB conçu pour fonctionner dans un environnement asynchrone [^20].
-- `packages` - Toutes les fonctions ou variables partagé sur plusieurs services [^21]
+- `axios` - packages pour les requêtes [^12].
+- `express` - Framework web minimaliste, rapide et sans opinion pour Node.js [^13].
+- `mongoose` - Mongoose est un outil de modélisation d'objets MongoDB conçu pour fonctionner dans un environnement asynchrone [^14].
+- `packages` - Toutes les fonctions ou variables partagé sur plusieurs services [^15].
 
 ## Backend installation
 
@@ -84,6 +78,9 @@ URLDB="L'url de votre base de donnée mongodb"
 
 PORT_APIGATEWAY="Le port où vous souhaitez que l'api gateway écoute"
 PORT_ADRESSMANAGER="Le port où vous souhaitez que l'adress manager écoute"
+
+PASSWORD_SERVICE="Le mot de passe qui sécurise tout les services et leurs communications"
+TOKEN_EXPIRATION="Le temps d'expiration du token en miliseconde"
 
 IP_APIGATEWAY="l'ip de la machine de l'api gateway (127.0.0.1 si tout roule sur la même machine)"
 IP_ADRESSMANAGER="l'ip de la machine de l'adress manager (127.0.0.1 si tout roule sur la même machine)"
@@ -110,11 +107,12 @@ POST /service
 ```
 
 #### Request Parameters : 
-| Parameter  | Type     | 
-| :--------- | :------: |
-| `port`     | `INT`    |
-| `adressIP` | `String` |
-| `service`  | `String` |
+|  Parameter  | Type     | 
+| :---------- | :------: |
+| `trust` | `String` | 
+| `port`      | `INT`    |
+| `adressIP`  | `String` |
+| `service`   | `String` |
 
 #### *Exemple de requête*
 ```js
@@ -124,7 +122,8 @@ POST /service
         url: '/service',
         method: 'POST',
         body: {
-            port : process.env.port, 
+            trust : process.env.PASSWORD_SERVICE,
+            port : process.env.port,
             adressIP : app.ip,
             service : "MAIL"
         },
@@ -158,9 +157,10 @@ GET /service
 ```
 
 #### Request Parameters : 
-| Parameter  |   Type   | Description             |
-| :--------- | :------: | :---------------------- |
-| `service`  | `String` | Votre service recherché |
+| Parameter   |   Type   | Description             |
+| :---------- | :------: | :---------------------- |
+| `trust` | `String` | Les signatures utilisé pour sécuriser les transmissions |
+| `service`   | `String` | Votre service recherché |
 
 #### *Exemple de requête*
 ```js
@@ -170,6 +170,7 @@ GET /service
         url: `/service`,
         method: 'GET',
         body: {
+            trust : process.env.PASSWORD_SERVICE,
             service : "MAIL",
         },
     })
@@ -207,12 +208,13 @@ PUT /service
 ```
 
 #### Request Parameters : 
-| Parameter  | Type     |
-| :--------- | :------: | 
-| `port`     | `INT`    | 
-| `adressIP` | `String` |
-| `service`  | `String` | 
-| `status`   | `INT`    | 
+| Parameter   | Type     |
+| :---------- | :------: | 
+| `trust` | `String` |
+| `port`      | `INT`    | 
+| `adressIP`  | `String` |
+| `service`   | `String` | 
+| `status`    | `INT`    | 
 
 #### *Exemple de requête*
 ```js
@@ -222,9 +224,10 @@ PUT /service
         url: `/@me`,
         method: 'PUT',
         body: {
-            port : 3000,
+            trust : process.env.PASSWORD_SERVICE,
             adressIP : "127.0.0.1",
             service : "MAIL",
+            port : 3000,
             status : 0,
         },
     })
@@ -258,11 +261,12 @@ DELETE /service
 ```
 
 #### Request Parameters : 
-| Parameter  | Type     |
-| :--------- | :------: | 
-| `adressIP` | `String` |
-| `service`  | `String` |
-| `port`     | `INT`    |
+| Parameter   | Type     |
+| :---------- | :------: | 
+| `trust` | `String` |
+| `adressIP`  | `String` |
+| `service`   | `String` |
+| `port`      | `INT`    |
 
 #### *Exemple de requête*
 ```js
@@ -272,6 +276,7 @@ DELETE /service
         url: `/@me`,
         method: 'DELETE',
         body: {
+            trust : process.env.PASSWORD_SERVICE,
             adressIP : "127.0.0.1",
             service : "MAIL",
             port : 3000,
@@ -307,21 +312,15 @@ Ref :
 [^1]: [Url du dépot `@commitlint/cli`](https://www.npmjs.com/package/@commitlint/cli)
 [^2]: [Url du dépot `@commitlint/config-conventional`](https://www.npmjs.com/package/@commitlint/config-conventional)
 [^3]: [Url du dépot `@types/express`](https://www.npmjs.com/package/@types/express)
-[^4]: [Url du dépot `@types/jest`](https://www.npmjs.com/package/@types/jest)
-[^5]: [Url du dépot `@types/node`](https://www.npmjs.com/package/@types/node)
-[^6]: [Url du dépot `@types/supertest`](https://www.npmjs.com/package/@types/supertest)
-[^7]: [Url du dépot `@typescript-eslint/eslint-plugin`](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
-[^8]: [Url du dépot `@typescript-eslint/parser`](https://www.npmjs.com/package/@typescript-eslint/parser)
-[^9]: [Url du dépot `eslint`](https://www.npmjs.com/package/eslint)
-[^10]: [Url du dépot `eslint-plugin-jest`](https://www.npmjs.com/package/eslint-plugin-jest)
-[^11]: [Url du dépot `husky`](https://www.npmjs.com/package/husky)
-[^12]: [Url du dépot `jest`](https://www.npmjs.com/package/jest)
-[^13]: [Url du dépot `nodemon`](https://www.npmjs.com/package/nodemon)
-[^14]: [Url du dépot `supertest`](https://www.npmjs.com/package/supertest)
-[^15]: [Url du dépot `ts-jest`](https://www.npmjs.com/package/ts-jest)
-[^16]: [Url du dépot `ts-node`](https://www.npmjs.com/package/ts-node)
-[^17]: [Url du dépot `typescript`](https://www.npmjs.com/package/typescript)
-[^18]: [Url du dépot `axios`](https://www.npmjs.com/package/axios)
-[^19]: [Url du dépot `express`](https://www.npmjs.com/package/express)
-[^20]: [Url du dépot `mongoose`](https://www.npmjs.com/package/mongoose)
-[^21]: [Url du dépot `packages`](https://github.com/Horus-Turboss-Finance/Packages)
+[^4]: [Url du dépot `@types/node`](https://www.npmjs.com/package/@types/node)
+[^5]: [Url du dépot `@typescript-eslint/eslint-plugin`](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin)
+[^6]: [Url du dépot `@typescript-eslint/parser`](https://www.npmjs.com/package/@typescript-eslint/parser)
+[^7]: [Url du dépot `eslint`](https://www.npmjs.com/package/eslint)
+[^8]: [Url du dépot `husky`](https://www.npmjs.com/package/husky)
+[^9]: [Url du dépot `nodemon`](https://www.npmjs.com/package/nodemon)
+[^10]: [Url du dépot `ts-node`](https://www.npmjs.com/package/ts-node)
+[^11]: [Url du dépot `typescript`](https://www.npmjs.com/package/typescript)
+[^12]: [Url du dépot `axios`](https://www.npmjs.com/package/axios)
+[^13]: [Url du dépot `express`](https://www.npmjs.com/package/express)
+[^14]: [Url du dépot `mongoose`](https://www.npmjs.com/package/mongoose)
+[^15]: [Url du dépot `packages`](https://github.com/Horus-Turboss-Finance/Packages)

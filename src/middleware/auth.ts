@@ -16,7 +16,7 @@ export const controleOrigine = catchSync(async (req : Request, res : Response, n
 
   let addr = [socketAddr].concat(proxyAddrs)
 
-  if(!addr.some(item => ipWhiteList.includes(item ?? "")) || !req.body.signature || req.body.signature !== env.PASSWORD_SERVICE) {
+  if(!addr.some(item => ipWhiteList.includes(item ?? "")) || !req.body.trust || req.body.trust !== env.PASSWORD_SERVICE) {
     logSys.ServiceInfo(CE_Services.app, `User : "${addr[0] ?? "NOT FOUND"} try to use service registery`)
     throw new ResponseException("Vous n'êtes pas abilité à utiliser cette ressource.").Forbidden()
   }
