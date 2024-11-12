@@ -21,23 +21,4 @@ export const controleOrigine = catchSync(async (req : Request, res : Response, n
     throw new ResponseException("Vous n'êtes pas abilité à utiliser cette ressource.").Forbidden()
   }
   next()
-
-  let method = req.method;
-
-  switch (method) {
-    case "GET":
-      logSys.Compteur.GET()
-      break;
-    case "POST":
-      logSys.Compteur.ADD()
-      break;
-    case "UPDATE":
-      logSys.Compteur.UPDATE()
-      break;
-    case "DELETE":
-      logSys.Compteur.DELETE()
-      break;
-    default:
-      break;
-  }
 })
