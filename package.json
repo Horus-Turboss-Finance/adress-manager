@@ -1,6 +1,6 @@
 {
   "name": "adress-manager",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "Service gérant les adresses des autres micro services pour l'adressage",
   "main": "./dist/index.js",
   "scripts": {
