@@ -1,10 +1,11 @@
+import { ResponseException, utils, middleware, params } from "packages";
 import { NextFunction, Request, Response } from "express";
-import { catchSync } from "../../middleware/catchAsync";
-import { CE_Services, logSys } from "../../config/log";
-import { ResponseException, utils } from "packages";
 import Service from "./adressModel";
 
 let { mongooseMessageErrorFormator } = utils
+let { inAppServiceName } = params
+let { catchSync } = middleware
+
 interface ServiceResponse {
   adressIP: string;
   service: string;
@@ -35,7 +36,7 @@ export const addService = catchSync(async (req: Request, res : Response, next : 
     adressIP,
   }
 
-  dataService(update, filter, next)
+  dataService(update, filter, req, next)
 });
 
 export const readService = catchSync(async (req: Request) => {
@@ -102,7 +103,10 @@ export const deleteService = catchSync(async (req: Request, res : Response, next
       ],
     });
   }catch(e : any){
-    logSys.UnknowAppError(CE_Services.mongoose, e)
+    let logSys = req.app.get("logSys")
+    if(!logSys) throw new Error("LogSys error : LogSys n'est pas monté sur le chemin `logSys`")
+
+    logSys.UnknowAppError(inAppServiceName.mongoose, e)
   }
 });
 
@@ -122,10 +126,10 @@ export const updateService = catchSync(async (req: Request, res : Response, next
     adressIP,
   }
 
-  dataService(update, filter, next)
+  dataService(update, filter, req, next)
 })
 
-let dataService = async (update : object, filter: object, next : NextFunction) => {
+let dataService = async (update : object, filter: object, req : Request, next : NextFunction) => {
   try{
     const validateCheck = new Service(update)
     const error = validateCheck.validateSync()
@@ -159,7 +163,10 @@ let dataService = async (update : object, filter: object, next : NextFunction) =
       }
     }
 
-    logSys.UnknowAppError(CE_Services.mongoose, e)
+    let logSys = req.app.get("logSys")
+    if(!logSys) throw new Error("LogSys error : LogSys n'est pas monté sur le chemin `logSys`")
+
+    logSys.UnknowAppError(inAppServiceName.mongoose, e)
     throw new ResponseException().UnknownError()
   }
 }

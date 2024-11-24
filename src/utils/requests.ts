@@ -1,11 +1,6 @@
-import path from "path";
 import axios from "axios";
-import { params } from "packages";
 
-let { env, loadEnv } = params
-env = loadEnv(path.resolve(__dirname, '../../../.env'))
-
-export let updateAfterControl = async ({adressIP, port, service, status} : {adressIP : string, port : number, service : string, status : number}) =>{
+export let updateAfterControl = async ({adressIP, port, service, status} : {adressIP : string, port : number, service : string, status : number}, env : any) =>{
   await axios({
     url: '/service',
     method: 'put',
@@ -19,7 +14,7 @@ export let updateAfterControl = async ({adressIP, port, service, status} : {adre
   })
 }
 
-export let downAfterControle = async ({adressIP, service, port} : {adressIP : string, service : string, port : number}) => {
+export let downAfterControle = async ({adressIP, service, port} : {adressIP : string, service : string, port : number}, env : any) => {
   await axios({
     url: '/service',
     method: 'delete',
@@ -32,7 +27,7 @@ export let downAfterControle = async ({adressIP, service, port} : {adressIP : st
   })
 }
 
-export let ping = async ({adressIP, port} : {adressIP : string, port : number}) => {
+export let ping = async ({adressIP, port} : {adressIP : string, port : number}, env : any) => {
   let res = await axios({
     url: '/ping',
     method: 'get',

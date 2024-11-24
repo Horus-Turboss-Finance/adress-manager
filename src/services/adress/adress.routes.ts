@@ -1,7 +1,13 @@
-import { addService, deleteService, readService, updateService } from './adressController';
-import { controleOrigine } from '../../middleware/auth';
+import { 
+  addService, 
+  readService, 
+  updateService,
+  deleteService, 
+} from './adressController';
+import { middleware } from "packages";
 import express from "express";
-import { LogRequest } from '../../config/log';
+
+let { LogRequest, controleOrigine } = middleware
 
 const router = express.Router()
 router.use(controleOrigine)

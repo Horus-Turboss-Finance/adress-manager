@@ -1,7 +1,16 @@
 import Service from "../adress/adressModel"
 import { downAfterControle, ping, updateAfterControl } from "../../utils/requests"
+import { params } from "packages"
 
-export const routineCheck = async () => {
+let { inAppServiceName } = params
+
+export const routineCheck = async (app : any) => {
+  let env = app.get("envLoad")
+  let logSys = app.get("logSys")
+    
+  if(!logSys) throw new Error("LogSys error : LogSys n'est pas monté dans le fichier `app.ts` sous le format `logSys`");
+  if(!env) throw new Error("Env error : Env n'est pas monté dans le fichier `app.ts` sous le format `envLoad`")
+
   const service = await Service.find()
 
   if(service.length > 0) {
@@ -10,14 +19,16 @@ export const routineCheck = async () => {
   
     let callService = async () => {
       try{
-        await ping({adressIP : service[i].adressIP, port : service[i].port})
+        await ping({adressIP : service[i].adressIP, port : service[i].port}, env)
       }catch(e : any){
         if(e.code == "ECONNREFUSED"){
           downAfterControle({
             adressIP: service[i].adressIP,
             service : service[i].service,
             port : service[i].port,
-          }).catch(()=>{})
+          }, env).catch(()=>{})
+
+          logSys.ServiceInfo(inAppServiceName.app, `Service : {name : "${service[i].service}", url: "${service[i].adressIP}:${service[i].port}} disconnected`)
         }
         
         if (e.response)  {
@@ -29,13 +40,17 @@ export const routineCheck = async () => {
               service : service[i].service,
               port : service[i].port,
               status : 2            
-            }).catch(()=>{})
+            }, env).catch(()=>{})
+
+            logSys.ServiceInfo(inAppServiceName.app, `Service : {name : "${service[i].service}", url: "${service[i].adressIP}:${service[i].port}} No Correct Response`)
           }else{
             downAfterControle({
               adressIP: service[i].adressIP,
               service : service[i].service,
               port : service[i].port,
-            }).catch(()=>{})
+            }, env).catch(()=>{})
+
+            logSys.ServiceInfo(inAppServiceName.app, `Service : {name : "${service[i].service}", url: "${service[i].adressIP}:${service[i].port}} disconnected`)
           }
         }
       }finally{
@@ -52,9 +67,7 @@ export const routineCheck = async () => {
   }
 
   return setTimeout(() => {
-    routineCheck()
+    routineCheck(app)
   }, 60*1000);
   // }, 30*60*1000);
 }
-
-routineCheck()

@@ -1,26 +1,31 @@
+import { ResponseException, log, middleware, params } from "packages";
 import adressRoutes from "./services/adress/adress.routes";
-import { ResponseProtocole } from "./middleware/response";
-import { catchSync } from "./middleware/catchAsync";
-import { logSys, CE_Services } from "./config/log";
-import { ResponseException } from "packages";
 import { connectDatabase } from "./config/db";
 import express from "express";
-
+import path from "path";
 
 const app = express()
 
-/*
-    CONNECT DB
-*/
-
-connectDatabase()
+let { catchSync, ResponseProtocole } = middleware
+let { serviceName, inAppServiceName, loadEnv, env } = params
 
 /*
     CONFIGURATION
 */
 
+env = loadEnv(path.resolve(__dirname, "../../.env"));
+
+app.set("envLoad", env)
+app.set("logSys", new log(serviceName.object.utilisateur, path.resolve("src", "log")))
+
 app.disable("x-powered-by")
 app.enable("json escalpe")
+
+/*
+    CONNECT DB
+*/
+
+connectDatabase(app)
 
 /*
     MIDDLEWARE
@@ -55,6 +60,12 @@ app.use(ResponseProtocole);
     CRITIC LOGS
 */
 process.on("uncaughtException", (e) => {
-    logSys.UnknowAppError(CE_Services.index, e)
+    console.log(e)
+    let logSys = app.get("logSys")
+
+    if(!logSys) throw new Error("LogSys error : LogSys n'est pas monté");
+
+    logSys.UnknowAppError(inAppServiceName.index, e)
 });
+
 export default app;
