@@ -57,20 +57,9 @@ export const readService = catchSync(async (req: Request) => {
     if (!serviceDB || !serviceDB[0])
       throw new ResponseException("Aucun Service trouvé").NotFound();
 
-    if(tmpIndexLecture[service] == undefined){
-      tmpIndexLecture[service] = 0
-    }else{
-      tmpIndexLecture[service] ++
-      if(tmpIndexLecture[service] > serviceDB.length) tmpIndexLecture[service] = 0;
-    }
-
     /* @ts-ignore */
     cacheServices.service[service] = serviceDB
     cacheServices.time = Date.now()
-
-    let serviceResponse : ServiceResponse = serviceDB[tmpIndexLecture[service]]
-    delete serviceResponse._id
-    throw new ResponseException(JSON.stringify(serviceResponse)).Success();
   }
 
   if(tmpIndexLecture[service] == undefined){
@@ -83,9 +72,9 @@ export const readService = catchSync(async (req: Request) => {
 
   /* @ts-ignore */
   let serviceResponse : ServiceResponse = cacheServices.service[service][tmpIndexLecture[service]]
-  delete serviceResponse._id
-  delete serviceResponse.__v
-  throw new ResponseException(JSON.stringify(serviceResponse)).Success();
+
+  let Response = JSON.stringify(AdressNormalizer(serviceResponse))
+  throw new ResponseException(Response).Success();
 });
 
 export const deleteService = catchSync(async (req: Request, res : Response, next : NextFunction) => {
@@ -168,5 +157,16 @@ let dataService = async (update : object, filter: object, req : Request, next : 
 
     logSys.UnknowAppError(inAppServiceName.mongoose, e)
     throw new ResponseException().UnknownError()
+  }
+}
+
+const AdressNormalizer = (serviceData : any) => {
+  let { service, port, adressIP, status } = serviceData
+
+  return {
+      adressIP,
+      service,
+      status,
+      port,
   }
 }
