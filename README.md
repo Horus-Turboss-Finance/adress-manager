@@ -1,6 +1,6 @@
 <div align="center">
-  <h1>Cash Eyes (adress register & discovery api documentation)</h1>
-  <h6>Ce repository contien toutes les routes (et routines) du micro service d'adress de Cash Eyes.</h6>
+  <h1>Cash Sight (adress register & discovery api documentation)</h1>
+  <h6>Ce repository contien toutes les routes (et routines) du micro service d'adress de Cash Sight.</h6>
 </div>
 
 ### Table des matières.

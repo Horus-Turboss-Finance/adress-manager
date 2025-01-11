@@ -16,7 +16,7 @@ let { serviceName, inAppServiceName, loadEnv, env } = params
 env = loadEnv(path.resolve(__dirname, "../../.env"));
 
 app.set("envLoad", env)
-app.set("logSys", new log(serviceName.object.utilisateur, path.resolve("src", "log")))
+app.set("logSys", new log(serviceName.object.adress, path.resolve("src", "log")))
 
 app.disable("x-powered-by")
 app.enable("json escalpe")
