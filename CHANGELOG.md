@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.7.0](https://github.com/Horus-Turboss-Finance/adress-manager/compare/v2.6.0...v2.7.0) (2025-01-11)
+
+
+### Features
+
+* ajout de logs sur requêtes pour traçabilité des erreurs ([6118e55](https://github.com/Horus-Turboss-Finance/adress-manager/commit/6118e5548afa729b70f42f2686d84a0bd4bde284))
+* **read:** ajout d'un filtre ip ([48f1e93](https://github.com/Horus-Turboss-Finance/adress-manager/commit/48f1e934038b1b743254f7f2d6d04d7e43aff96f))
+
 ## [2.6.0](https://github.com/Horus-Turboss-Finance/adress-manager/compare/v2.5.0...v2.6.0) (2024-11-15)
 
 
