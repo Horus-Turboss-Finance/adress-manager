@@ -9,7 +9,7 @@ interface IService {
   service: string;
   port: number,
   adressIP: string,
-  status: Number
+  status: number
 }
 
 const servicesSchema = new Schema<IService>({

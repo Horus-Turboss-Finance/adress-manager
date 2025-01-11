@@ -161,6 +161,7 @@ GET /service
 | :---------- | :------: | :---------------------- |
 | `trust` | `String` | Les signatures utilisé pour sécuriser les transmissions |
 | `service`   | `String` | Votre service recherché |
+| `ip`   | `String` | L'ip de la machine du service souhaité |
 
 #### *Exemple de requête*
 ```js

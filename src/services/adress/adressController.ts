@@ -40,9 +40,10 @@ export const addService = catchSync(async (req: Request, res : Response, next : 
 });
 
 export const readService = catchSync(async (req: Request) => {
-  const { service } = req.body;
+  const { service, ip } = req.body;
   if (!service)
     throw new ResponseException("Aucun service fournit").BadRequest();
+
 
   /* @ts-ignore */
   if(cacheServices.time < Date.now() - 60 * 1000 || !cacheServices.service[service]){
@@ -68,6 +69,15 @@ export const readService = catchSync(async (req: Request) => {
     tmpIndexLecture[service] ++
     /* @ts-ignore */
     if(tmpIndexLecture[service] >= cacheServices.service[service].length) tmpIndexLecture[service] = 0
+  }
+
+  if(ip){
+  /* @ts-ignore */
+    let serviceTMP : ServiceResponse = cacheServices.service[service].filter(e => e.adressIP == ip)[0] ;
+    if(serviceTMP) {
+      let Response = JSON.stringify(AdressNormalizer(serviceTMP))
+      throw new ResponseException(Response).Success();
+    }
   }
 
   /* @ts-ignore */
