@@ -15,7 +15,6 @@ interface ServiceResponse {
   _id?: string;
 }
 
-let tmpIndexLecture : any = {}
 let cacheServices = {
   time : Date.now(),
   service : {}
@@ -43,7 +42,8 @@ export const readService = catchSync(async (req: Request) => {
   const { service, ip } = req.body;
   if (!service)
     throw new ResponseException("Aucun service fournit").BadRequest();
-
+  if(!ip)
+    throw new ResponseException("Aucune ip fournit").BadRequest();
 
   /* @ts-ignore */
   if(cacheServices.time < Date.now() - 60 * 1000 || !cacheServices.service[service]){
@@ -63,25 +63,13 @@ export const readService = catchSync(async (req: Request) => {
     cacheServices.time = Date.now()
   }
 
-  if(tmpIndexLecture[service] == undefined){
-    tmpIndexLecture[service] = 0
-  }else{
-    tmpIndexLecture[service] ++
-    /* @ts-ignore */
-    if(tmpIndexLecture[service] >= cacheServices.service[service].length) tmpIndexLecture[service] = 0
-  }
-
-  if(ip){
   /* @ts-ignore */
-    let serviceTMP : ServiceResponse = cacheServices.service[service].filter(e => e.adressIP == ip)[0] ;
-    if(serviceTMP) {
-      let Response = JSON.stringify(AdressNormalizer(serviceTMP))
-      throw new ResponseException(Response).Success();
-    }
-  }
-
+  let serviceTMP : [ServiceResponse] = cacheServices.service[service].filter(e => e.adressIP == ip) ;
+  
+  if(!serviceTMP[0]) throw new ResponseException("Aucun service trouvé pour votre ip").NotFound();
+  
   /* @ts-ignore */
-  let serviceResponse : ServiceResponse = cacheServices.service[service][tmpIndexLecture[service]]
+  let serviceResponse : ServiceResponse = serviceTMP[Math.floor(Math.random() * serviceTMP.length)]
 
   let Response = JSON.stringify(AdressNormalizer(serviceResponse))
   throw new ResponseException(Response).Success();
