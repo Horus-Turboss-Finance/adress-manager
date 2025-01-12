@@ -11,7 +11,9 @@ export const routineCheck = async (app : any) => {
   if(!logSys) throw new Error("LogSys error : LogSys n'est pas monté dans le fichier `app.ts` sous le format `logSys`");
   if(!env) throw new Error("Env error : Env n'est pas monté dans le fichier `app.ts` sous le format `envLoad`")
 
-  const service = await Service.find()
+  const service = await Service.find({
+    adressIP: env.MACHINE_IP
+  })
 
   if(service.length > 0) {
     let pingAverage = Math.floor((60 * 950) / service.length), i = 0
@@ -19,7 +21,7 @@ export const routineCheck = async (app : any) => {
   
     let callService = async () => {
       try{
-        await ping({adressIP : service[i].adressIP, port : service[i].port}, env)
+          await ping(service[i].port)
       }catch(e : any){
         if(e.code == "ECONNREFUSED"){
           downAfterControle({

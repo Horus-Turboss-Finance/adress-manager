@@ -4,7 +4,7 @@ export let updateAfterControl = async ({adressIP, port, service, status} : {adre
   await axios({
     url: '/service',
     method: 'put',
-    baseURL: `http://${env.IP_ADRESSMANAGER}:${env.PORT_ADRESSMANAGER}`,
+    baseURL: `http://127.0.0.1:${env.PORT_ADRESSMANAGER}`,
     data: {
       adressIP, 
       service,
@@ -18,7 +18,7 @@ export let downAfterControle = async ({adressIP, service, port} : {adressIP : st
   await axios({
     url: '/service',
     method: 'delete',
-    baseURL: `http://${env.IP_ADRESSMANAGER}:${env.PORT_ADRESSMANAGER}`,
+    baseURL: `http://127.0.0.1:${env.PORT_ADRESSMANAGER}`,
     data: {
       adressIP, 
       service,
@@ -27,11 +27,11 @@ export let downAfterControle = async ({adressIP, service, port} : {adressIP : st
   })
 }
 
-export let ping = async ({adressIP, port} : {adressIP : string, port : number}, env : any) => {
+export let ping = async (port :number) => {
   let res = await axios({
     url: '/ping',
     method: 'get',
-    baseURL: `http://${adressIP}:${port}`
+    baseURL: `http://127.0.0.1:${port}`
   })
 
   return res
