@@ -82,9 +82,9 @@ PORT_ADRESSMANAGER="Le port où vous souhaitez que l'adress manager écoute"
 PASSWORD_SERVICE="Le mot de passe qui sécurise tout les services et leurs communications"
 TOKEN_EXPIRATION="Le temps d'expiration du token en miliseconde"
 
-IP_APIGATEWAY="l'ip de la machine de l'api gateway (127.0.0.1 si tout roule sur la même machine)"
-IP_ADRESSMANAGER="l'ip de la machine de l'adress manager (127.0.0.1 si tout roule sur la même machine)"
-IP_SERVICE_WHITELIST="l'ip des machines autorisé à se connecter directement entre services (127.0.0.1 si tout roule sur la même machine)"
+IP_APIGATEWAY="l'ip de la machine de l'api gateway (192.168.68.72 si tout roule sur la même machine)"
+IP_ADRESSMANAGER="l'ip de la machine de l'adress manager (192.168.68.72 si tout roule sur la même machine)"
+IP_SERVICE_WHITELIST="l'ip des machines autorisé à se connecter directement entre services (192.168.68.72 si tout roule sur la même machine)"
 
 NODE_ENV="DEVELOPMENT|PRODUCTION|TEST"
 ```
@@ -136,7 +136,6 @@ POST /service
 | Parameter | Type | Description |
 | :-------- | :--: | :---------- |
 | `success` | `Boolean` | Validation si la requête s'est terminé sans problème où inversement |
-| `title` | `String` | Nom de l'erreur |
 | `status` | `Interger` | Le code http de la réponse |
 | `data` | `User` | Result de la requête |
 
@@ -144,7 +143,6 @@ POST /service
 ```js
 {
   success : true,
-  title : "SUCCESS",
   status : 201,
   data : 'Service enregistrée'
 }
@@ -183,7 +181,6 @@ GET /service
 | Parameter | Type | Description |
 | :-------- | :--: | :---------- |
 | `success` | `Boolean` | Validation si la requête s'est terminé sans problème où inversement |
-| `title` | `String` | Nom de l'erreur |
 | `status` | `Interger` | Le code http de la réponse |
 | `data` | `Adress` | Result de la requête |
 | `data.service` | `String` | Le nom du service |
@@ -195,9 +192,8 @@ GET /service
 ```js
 {
   success : true,
-  title : "SUCCESS",
   status : 200,
-  data : '[{"service" : "MAIL", "port" : 3000, "adressIP" : "127.0.0.1", "status" : 1}]'
+  data : '[{"service" : "MAIL", "port" : 3000, "adressIP" : "192.168.68.72", "status" : 1}]'
 }
 ```
 
@@ -226,7 +222,7 @@ PUT /service
         method: 'PUT',
         body: {
             trust : process.env.PASSWORD_SERVICE,
-            adressIP : "127.0.0.1",
+            adressIP : "192.168.68.72",
             service : "MAIL",
             port : 3000,
             status : 0,
@@ -278,7 +274,7 @@ DELETE /service
         method: 'DELETE',
         body: {
             trust : process.env.PASSWORD_SERVICE,
-            adressIP : "127.0.0.1",
+            adressIP : "192.168.68.72",
             service : "MAIL",
             port : 3000,
         },
@@ -291,7 +287,6 @@ DELETE /service
 | Parameter | Type | Description |
 | :-------- | :--: | :---------- |
 | `success` | `Boolean` | Validation si la requête s'est terminé sans problème où inversement |
-| `title` | `String` | Nom de l'erreur |
 | `status` | `Interger` | Le code http de la réponse |
 | `data` | `User` | Result de la requête |
 
@@ -299,7 +294,6 @@ DELETE /service
 ```js
 {
   success : true,
-  title : "SUCCESS",
   status : 200,
   data : "Service supprimé des annuaires"
 }
